@@ -19,10 +19,10 @@ type State = [VariantState]
 variantUpdateStep :: VariantState -> VariantState
 variantUpdateStep (Simple proportion func) = Simple (proportion * func) func
 
-getProportion :: VariantState -> Double
+getProportion :: VariantState -> Proportion
 getProportion (Simple proportion _) = proportion
 
-normalizeVariantState :: Double -> VariantState -> VariantState
+normalizeVariantState :: Proportion -> VariantState -> VariantState
 normalizeVariantState proportionSum (Simple proportion func) = Simple (proportion/ proportionSum) func 
 
 normalizeState :: State -> State
