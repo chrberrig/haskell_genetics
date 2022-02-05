@@ -9,12 +9,12 @@ type Proportion = Double
 data VariantState = Simple Proportion RandomFunc
 type State = [VariantState]
 
--- updateState :: State -> State
--- normalizeState :: Sate -> State
 -- reportState :: State -> State
 
-rand :: () -> Double
-rand() = 1.0
+-- rand :: () -> Double
+-- rand() = 1.0
+-- getVariant :: () -> VariantState
+-- getVariant () = Simple 0.5 (rand())
 
 variantUpdateStep :: VariantState -> VariantState
 variantUpdateStep (Simple proportion func) = Simple (proportion * func) func
@@ -22,8 +22,10 @@ variantUpdateStep (Simple proportion func) = Simple (proportion * func) func
 getProportion :: VariantState -> Double
 getProportion (Simple proportion _) = proportion
 
-getVariant :: () -> VariantState
-getVariant () = Simple 0.5 (rand())
+normalizeVariantState :: Double -> VariantState -> VariantState
+normalizeVariantState proportionSum (Simple proportion func) = Simple (proportion/ proportionSum) func 
 
--- normalizeState :: State -> State
--- normalizeState states = map getProportion states
+normalizeState :: State -> State
+normalizeState states = map (normalizeVariantState sum) states
+  where
+    sum = foldl (\sofar new -> sofar + getProportion(new)) 0.0 states
